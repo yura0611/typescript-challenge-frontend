@@ -77,7 +77,9 @@ export class AppComponent implements OnInit {
       this.map.on('mousemove', STOPS_LAYER_ID, (event) => {
         this.map.getCanvas().style.cursor = 'pointer'
 
-        if (event.features.length === 0) return
+        if (event.features.length === 0) {
+          return
+        }
 
         if (stopId) {
           this.map.removeFeatureState({ source: STOPS_SOURCE_ID, id: stopId })
@@ -103,7 +105,9 @@ export class AppComponent implements OnInit {
           layers: [STOPS_LAYER_ID],
         })
 
-        if (features.length === 0) return
+        if (features.length === 0) {
+          return
+        }
 
         const selectedStop = features[0]
         this.selectStop(selectedStop.id.toString())
