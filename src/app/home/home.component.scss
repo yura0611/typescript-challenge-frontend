@@ -4,6 +4,12 @@
   @include flex-column();
   gap: var(--default-gap);
 
+  .header {
+    @include flex-row();
+    @include flex-align(space-between, center);
+    gap: var(--small-gap);
+  }
+
   .title {
     @include title();
   }
@@ -20,6 +26,11 @@
     padding: var(--default-gap);
 
     .line-header {
+      @include flex-row();
+      @include flex-align(space-between, center);
+    }
+
+    .line-info {
       @include flex-row();
       @include flex-align(flex-start, center);
       gap: var(--small-gap);

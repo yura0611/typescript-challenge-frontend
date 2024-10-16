@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Add new line</h2>
+<mat-dialog-content>
+  <form [formGroup]="lineForm">
+    <div>
+      <mat-form-field>
+        <mat-label>Line Id</mat-label>
+        <input matInput formControlName="id" />
+      </mat-form-field>
+    </div>
+
+    @for (stopControl of stopsControls; let stopIndex = $index; track stopIndex) {
+      <div class="stop" [formGroup]="getFormGroupAtIndex(stopIndex)">
+        @for (control of controlsArray; let ctrlIndex = $index; track ctrlIndex) {
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>
+              {{ control.label }}
+            </mat-label>
+
+            <input matInput type="{{ control.type }}" [formControlName]="control.name" />
+          </mat-form-field>
+        }
+
+        <button mat-button (click)="removeStop(stopIndex)"><mat-icon>delete</mat-icon></button>
+      </div>
+    }
+
+    @let stopsInvalid = stopsControls.length < 2;
+
+    @if (stopsInvalid) {
+      <mat-error>You must provide at least 2 stops</mat-error>
+    }
+
+    <button mat-button (click)="addStop()">Add Stop</button>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    (click)="onSubmit()"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!lineForm.valid || stopsInvalid">
+    Add Line
+  </button>
+</mat-dialog-actions>

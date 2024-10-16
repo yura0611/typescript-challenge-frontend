@@ -1,0 +1,11 @@
+@import 'mixins';
+
+:host {
+  .stop {
+    @include flex-row();
+    @include flex-align(space-between, center);
+    gap: var(--small-gap);
+
+    margin-bottom: var(--small-gap);
+  }
+}

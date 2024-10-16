@@ -16,10 +16,18 @@ import { fromTransitLines } from 'src/store/transit-lines/transit-lines.selector
 })
 export class DetailComponent {
   readonly stopName: Signal<string>
+  readonly stopPeopleOn: Signal<number>
+  readonly stopPeopleOff: Signal<number>
+  readonly stopReachablePopulationWalk: Signal<number>
+  readonly stopReachablePopulationBike: Signal<number>
 
   constructor(private store: Store<RootState>) {
     const selectedStop = this.store.selectSignal(fromTransitLines.selectedStop)
     this.stopName = computed(() => selectedStop()?.name || 'No selection')
+    this.stopPeopleOn = computed(() => selectedStop()?.peopleOn || 0)
+    this.stopPeopleOff = computed(() => selectedStop()?.peopleOff || 0)
+    this.stopReachablePopulationWalk = computed(() => selectedStop()?.reachablePopulationWalk || 0)
+    this.stopReachablePopulationBike = computed(() => selectedStop()?.reachablePopulationBike || 0)
   }
 
   clearSelection(): void {

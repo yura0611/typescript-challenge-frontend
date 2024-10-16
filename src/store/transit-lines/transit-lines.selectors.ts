@@ -15,6 +15,10 @@ export namespace fromTransitLines {
     stops.find((stop) => stop.id === selStopId)
   )
 
+  export const loading = createSelector(transitLinesState, (state) => state.loading)
+
+  export const error = createSelector(transitLinesState, (state) => state.error)
+
   /**
    * Mapbox source for the locations
    */
@@ -37,6 +41,40 @@ export namespace fromTransitLines {
               _id: stop.id,
             },
           })),
+        },
+      }) as GeoJSONSourceSpecification
+  )
+
+  export const linesGeoJson = createSelector(
+    allStops,
+    (stops) =>
+      ({
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: stops
+            .map((stop, index) => {
+              const nextStop = stops[index + 1]
+
+              if (nextStop && stop.nextId === nextStop.id && nextStop.prevId === stop.id) {
+                return {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'LineString',
+                    coordinates: [
+                      [stop.lng, stop.lat],
+                      [nextStop.lng, nextStop.lat],
+                    ],
+                  },
+                  properties: {
+                    lineId: `${stop.id}-${nextStop.id}`,
+                  },
+                }
+              }
+
+              return null
+            })
+            .filter(Boolean),
         },
       }) as GeoJSONSourceSpecification
   )
